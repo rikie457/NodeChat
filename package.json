@@ -1,0 +1,12 @@
+{
+  "name": "NodeChat",
+  "description": "A chat application similair to Whatsapp but with lobbies",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": "^4.0.0-beta.3",
+    "express": "^4.15.2",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.9",
+    "socket.io": "^2.0.4"
+  }
+}
