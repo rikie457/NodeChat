@@ -13,13 +13,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
-            Lobbies
+            Lobbies <a id="newroom">new</a>
+            <div id="activelobbies" class="col-md-12"></div>
         </div>
         <div id="messagesection" class="col-sm-6">
+            <h2></h2>
+            <h2>Messages</h2>
             <div id="messagerecieve" class="col-md-12">
-                <h2>Messages</h2>
-            </div>
-            <div id="messagesend"  class="col-md-12">
+
                 <form id="sendmessageform" action="">
                     <div class="form-row">
                         <div class="form-group col-md-10">
@@ -56,12 +57,33 @@
             var socket = io();
 
             $('#sendmessageform').submit(function () {
-                socket.emit('chat message', $('#m').val());
+                var message = $('#m').val();
+                console.log(message);
+                socket.emit('chatmessage', message);
                 $('#m').val('');
                 return false;
             });
-            socket.on('chat message', function (msg) {
+            socket.on('message', function (msg) {
                 $('#messagerecieve').append("<span id='message'>" + msg + "</span><br/>");
+            });
+
+            socket.on("createroom", function () {
+                var room = prompt("Lobby name");
+                socket.emit("createroomname", room);
+                activeroom = room;
+            })
+
+            socket.on("succesfullroomcreated", function (room) {
+                $('#activelobbies').append("<span id='lobby' data-id='" + JSON.parse(room).id + "'>" + JSON.parse(room).name + "</span><br/>");
+            });
+
+
+            $("#lobby").on("click", function () {
+                socket.emit("switchlobby");
+            });
+
+            $("#newroom").on("click", function () {
+                socket.emit("createroomname");
             });
         });
     </script>
